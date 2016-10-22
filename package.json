@@ -1,0 +1,16 @@
+{
+  "name": "alexa-genius",
+  "version": "1.0.0",
+  "description": "Ask Alexa about songs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "genius-api": "^0.3.0",
+    "requests": "^0.1.7"
+  }
+}
