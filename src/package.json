@@ -11,6 +11,7 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "genius-api": "^0.3.0",
+    "genius-wrapi": "^0.1.0",
     "requests": "^0.1.7"
   }
 }

@@ -3,34 +3,39 @@
  */
 var geniusWrapi = require('genius-wrapi');
 var client = new geniusWrapi("Bg0VtbkDCs6ryNbdEQyStts20hFUuTKHEaNhj0WRVJGnGrJJ4s4qoIFeyymoIt1S");
-var scrapper = require("./scrape.js");
+var request = require("request"), cheerio = require("cheerio");
 
 //Example
 // scrapper.scrape("http://genius.com/Desiigner-panda-lyrics");
 
-client.search(
-    {
-        q:'Kendrick Lamar'
-    },
-    function(err, data) {
-        if (!err) {
-            console.log(data.response.hits[0].result.url);
-            scrapper.scrape(data.response.hits[0].result.url);
-
-        }
-    }
-);
-
 exports.handler = function( event, context ) {
 
-    var response = {
-        outputSpeech: {
-            type: "PlainText",
-            text: "Hello Cli!"
+    client.search(
+        {
+            q:'King Kunta'
         },
-        shouldEndSession: true
-    };
-
-    context.succeed( { response: response } );
-
+        function(err, data) {
+            if (!err) {
+                var url = data.response.hits[0].result.url;
+                console.log(url);
+                request(url, function (error, response, body) {
+                    if (!error) {
+                        var $ = cheerio.load(body);
+                        var content = $('div[class="rich_text_formatting"]').find('p').first().text();
+                        console.log(content);
+                        var response = {
+                            outputSpeech: {
+                                type: "PlainText",
+                                text: content
+                            },
+                            shouldEndSession: true
+                        };
+                        context.succeed( { response: response } );
+                    } else {
+                        console.log("We’ve encountered an error: " + error);
+                    }
+                });
+            }
+        }
+    );
 };
